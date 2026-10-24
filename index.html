@@ -229,9 +229,12 @@ button, input, select, textarea { max-width:100%; }
 </div><div class="copy">© 2026 Utsav Tours &amp; Travels. All rights reserved.</div></footer>
 <script>
 var PHONE='919702479779'; // replace with the WhatsApp number, country code first, no + or spaces
+document.addEventListener('DOMContentLoaded', togglePassengerFields);
 function togglePassengerFields(){
  var isOther=document.querySelector('input[name="bookingFor"]:checked').value==='other';
  document.getElementById('otherFields').style.display=isOther?'block':'none';
+  // Booking name is required only for someone else's booking
+ document.getElementById('nm').required = isOther; 
  document.getElementById('passengerName').required=isOther;
  document.getElementById('passengerMobile').required=isOther;
 }
@@ -239,9 +242,9 @@ function send(e){e.preventDefault();
  if(/X/.test(PHONE)){document.getElementById('msg').textContent='Booking by WhatsApp isn’t set up yet. Please call us.';return false}
  var v=function(i){return document.getElementById(i).value.trim()};
  var isOther=document.querySelector('input[name="bookingFor"]:checked').value==='other';
- var bookingName=v('nm');
- var company=isOther?(v('company')||'NA'):'NA';
- var passengerName=isOther?v('passengerName'):bookingName;
+ var bookingName = isOther ? v('nm') : v('passengerName');
+ var company = isOther ? (v('company') || 'NA') : 'NA';
+ var passengerName = v('passengerName');
  var passengerMobile=isOther?v('passengerMobile'):'';
  var passenger=passengerName+(passengerMobile?'('+passengerMobile+')':'');
  var rawDate=v('dt');
